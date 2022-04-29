@@ -13,7 +13,7 @@ Output
 ## makepath
 
 create the given path if not present
-
+ [source](https://github-link.vercel.app/api?ghUrl=https://github.com/sapal6/Nbdev.jl/blob/master/src/Documenter.jl&q=makepath)
 
 
 ```
@@ -49,7 +49,7 @@ Output
 
 > mkdocsyml()–> Creates a mkdocs.yml file at the document root and fills it with initial content.
 
-
+ [source](https://github-link.vercel.app/api?ghUrl=https://github.com/sapal6/Nbdev.jl/blob/master/src/Documenter.jl&q=mkdocsyml)
 
 
 ```
@@ -102,6 +102,6 @@ Output
 
 > newsitegen()–> Create required directory structure for hosting documents and the initial files(index.md and mkdocs.yml) if not already there.
 
-
+ [source](https://github-link.vercel.app/api?ghUrl=https://github.com/sapal6/Nbdev.jl/blob/master/src/Documenter.jl&q=newsitegen)
 
 

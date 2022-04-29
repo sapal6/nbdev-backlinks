@@ -3,12 +3,41 @@
 
 module Make
 #export
+using OrderedCollections
+
+#export
 include("../src/Documenter.jl")
 
 #export
+import YAML
+
+#export
+"""
+> build(nbsdir)--> extracts markdown items and builds documentation from the notebooks in the given directory. Also, creates creates a readme file with content in the project root.
+"""
 function build(nbsdir)
-		Documenter.export2md(nbsdir)
-		Documenter.export2readme()
+    Documenter.export2md(nbsdir)
+	Documenter.export2readme()
+end
+
+#export
+mkdocs = OrderedDict("site-name" => "your site name", "nav" => [OrderedDict("Home" => "index.md")],
+"theme" => OrderedDict("name" => "material", "palette" => OrderedDict("primary" => "white"), "font" => OrderedDict("text" => "Roboto"), "logo" => "assets/asset image filename", "favicon" => "asset/ asset name", "features" => "navigation.tabs", "markdown_extensions" => ["meta", "toc"], "plugins" => ["search", "tags"]), "extra" => OrderedDict("social" => [OrderedDict("icon" => "fontawsome/brans/twitter", "link" => "twitter link"), OrderedDict("icon" => "fotawsome/brands/linkedin", "link" => "linkedin link")]), "repo_url" => "url to your git repo", "repo_name" => "name of your git repo")
+
+#export
+begin
+"""
+> new(projname)-> Scaffolds a new project directory with the necessary sub-directories and configuration files.
+"""
+#TODO: creation of assets, iamges, index.jl is not getting
+#created when this function is called from terminal
+function new(projname = "newproj")
+	subdirs = ["$projname/docs", "nbs", "$projname/src", "$projname/docs/images", "$projname/docs/assets"]
+	files = ["$projname/Manifest.toml", "$projname/Project.toml", "$projname/mkdocs.yml", "$projname/nbs/index.jl"]
+	map(mkpath, subdirs)
+	map(touch, files)
+	YAML.write_file(files[3], mkdocs)
+end
 end
 
 end

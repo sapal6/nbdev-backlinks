@@ -6,6 +6,9 @@ module Documenter
 using Base.Docs
 
 #export
+using TOML
+
+#export
 using Markdown
 
 #export
@@ -137,11 +140,18 @@ end
 
 #export
 """
-> collectfuncdocs(obj)--> Collects objects (functions, methods, macro structs etc.) and creates an array of documents (generated from teh docstrings). Creates aFunctionDocs type from these documents.
+> collectfuncdocs(obj)--> Collects objects (functions, methods, macro structs etc.) and creates an array of documents (generated from the docstrings). Creates aFunctionDocs type from these documents.
 """
 function collectfuncdocs(obj)
 	docs=doc(obj)
-    fdocs=["$(docs.meta[:results][i].object)" for i=1:length(docs.meta[:results])]
+	searchurl = "https://github-link.vercel.app/api?ghUrl="
+	giturl = getsettings(joinpath("..", "Project.toml"), ["settings", "github_url"])
+
+	pattern = r"\\(.+\\)*(.+)(\.jl)"
+	fn = uppercasefirst(Export.strip(basename(join(match(pattern, string(first(methods(obj)))).captures)), r"[0-9_]"))
+	
+	searchurl = "$searchurl$giturl/blob/master/src/$fn&q=$(string(nameof(obj)))"
+    fdocs=["$(docs.meta[:results][i].object) [source]($searchurl)" for i=1:length(docs.meta[:results])]
 	Functiondocs(fdocs)
 end
 

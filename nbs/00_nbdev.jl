@@ -28,7 +28,8 @@ begin
 notebook2script = Export.notebook2script
 showdoc = Documenter.showdoc
 build = Make.build
-export notebook2script, showdoc, build
+new = Make.new
+export notebook2script, showdoc, build, new
 end
 
 # ╔═╡ 9724fdac-8ffd-483c-9d7e-a4cdc8d0dd72
