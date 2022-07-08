@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.1
+# v0.18.4
 
 using Markdown
 using InteractiveUtils
@@ -57,6 +57,7 @@ md"## Lower Level Entities(Structs, methods etc.)
 These are the objects on which nbdev's Documenter module was built. You can use it to extend nbdev but these are automtically used by Nbdev's internal engine to generate code files for you."
 
 # ╔═╡ 28951cc5-0f45-48fc-965a-4257de0332fa
+#noop
 begin
 f = joinpath("..", "Project.toml")
 path = "https://github.com/sapal6/Nbdev.jl"
@@ -468,7 +469,7 @@ function createpage(fn::AbstractString, nb::Notebook)
 	for cell in nb.cells
 		
 		if cell.errored
-			error("Build stopped. Seems like the code $cell.code has an error")
+			error("Build stopped. Seems like the code $(cell.code) has an error")
 			break
 	    end
 	    if startswith(cell.code, "md")

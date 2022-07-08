@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.1
+# v0.18.4
 
 using Markdown
 using InteractiveUtils
@@ -30,6 +30,10 @@ include("../src/Export.jl")
 # ╔═╡ 17a13720-29ba-11ec-0ba4-83c9ee9ac582
 #export
 include("../src/Documenter.jl")
+
+# ╔═╡ 50c0f688-28c2-4064-abe3-718c029fa601
+#export
+include("../src/Common.jl")
 
 # ╔═╡ 3e8524c9-1b00-4e30-bb47-524991f3d0f7
 #export
@@ -71,14 +75,12 @@ md"## new"
 #export
 begin
 """
-> new(projname)-> Scaffolds a new project directory with the necessary sub-directories and configuration files.
+> new(projname)-> Scaffolds a new project sub-directories and configuration files.
 """
-#TODO: creation of assets, iamges, index.jl is not getting
-#created when this function is called from terminal
-function new(projname = "newproj")
-	subdirs = ["$projname/docs", "nbs", "$projname/src", "$projname/docs/images", "$projname/docs/assets"]
-	files = ["$projname/Manifest.toml", "$projname/Project.toml", "$projname/mkdocs.yml", "$projname/nbs/index.jl"]
-	map(mkpath, subdirs)
+function new(path = ".")
+	dirs = ["$path/docs", "$path/nbs", "$path/src", "$path/docs/images", "$path/docs/assets"]
+	files = ["$path/Manifest.toml", "$path/Project.toml", "$path/mkdocs.yml", "$path/nbs/index.jl"]
+	map(mkpath, dirs)
 	map(touch, files)
 	YAML.write_file(files[3], mkdocs)
 end
@@ -98,51 +100,123 @@ md"The `new()` function can be used when you want to create a project in a clone
 testdir = "../test"
 
 # ╔═╡ f481a9f0-d91b-49b6-9bce-48896d6af938
-new(joinpath(testdir, "testproj"))
-
-# ╔═╡ 8a115e3d-11d4-4632-8e59-e8c25cb4a295
-#noop
-@test isdir(joinpath(testdir, "testproj")) == true
+new(testdir)
 
 # ╔═╡ 785a962e-dfb0-49c0-9679-a6ff0702b001
 #noop
-@test isdir(joinpath(testdir, "testproj", "nbs")) == true
+@test isdir(joinpath(testdir, "nbs")) == true
 
 # ╔═╡ 1de9bc3d-0984-47f3-ad74-adb2290d3889
 #noop
-@test isdir(joinpath(testdir, "testproj", "docs")) == true
+@test isdir(joinpath(testdir, "docs")) == true
 
 # ╔═╡ 62705a1e-bbca-4bd1-815c-6f00ece58b73
 #noop
-@test isdir(joinpath(testdir, "testproj", "src")) == true
+@test isdir(joinpath(testdir, "src")) == true
 
 # ╔═╡ fc17a65b-6223-4f7d-9f75-795781fa81d4
 #noop
-@test isdir(joinpath(testdir, "testproj", "docs", "images")) == true
+@test isdir(joinpath(testdir, "docs", "images")) == true
 
 # ╔═╡ 5cb8289c-5ae3-4bba-8ac4-0765ee2464a3
 #noop
-@test isdir(joinpath(testdir, "testproj", "docs", "assets")) == true
+@test isdir(joinpath(testdir, "docs", "assets")) == true
 
 # ╔═╡ ccfbfefc-5bc3-45ba-a83d-e9ab2a807311
 #noop
-@test isfile(joinpath(joinpath(testdir, "testproj"), "Project.toml")) == true
+@test isfile(joinpath(testdir, "Project.toml")) == true
 
 # ╔═╡ d503f5a9-54c9-488b-8ce2-4a81bc0a3cee
 #noop
-@test isfile(joinpath(joinpath(testdir, "testproj"), "Manifest.toml")) == true
+@test isfile(joinpath(testdir, "Manifest.toml")) == true
 
 # ╔═╡ 7477e2a6-d2a2-4552-9b03-63daef9c1189
 #noop
-@test isfile(joinpath(joinpath(testdir, "testproj"), "mkdocs.yml")) == true
+@test isfile(joinpath(testdir, "mkdocs.yml")) == true
 
 # ╔═╡ f29215d9-b898-4540-bf71-6e0c4f192979
 #noop
-@test isfile(joinpath(joinpath(testdir, "testproj"), "nbs", "index.jl")) == true
+@test isfile(joinpath(testdir, "nbs", "index.jl")) == true
 
 # ╔═╡ 89317c3d-5889-4887-893c-aed3bf37b55e
 #noop
-rm(joinpath(testdir, "testproj"), recursive=true)
+begin
+	dirs = ["$testdir/docs", "$testdir/nbs", "$testdir/src"]
+	files = ["$testdir/Manifest.toml", "$testdir/Project.toml", "$testdir/mkdocs.yml"]
+	map(dir -> rm(dir, recursive = true), dirs)
+	map(rm, files)
+end
+
+# ╔═╡ 5f377d5e-cd11-428d-8ae5-c93f4f0c097c
+md"## buildlib"
+
+# ╔═╡ 30d55aa6-4c27-4ec7-8b03-de2eb00eb562
+#export
+begin
+"""
+> buildlib()-> Build a deployable package structure inside it's own directory
+"""
+function buildlib(path = ".")
+
+	files = ["Manifest.toml", "Project.toml"]
+
+    if !isfile(joinpath(path, files[2]))
+		error("$(files[2]) not present in project root. Can not proceed further")
+	else
+		projname = Common.getsetting(joinpath(path, "Project.toml"), "name")
+	end
+
+	if isdir(joinpath(path, projname))
+		rm(joinpath(path, projname), recursive=true)
+	end
+	mkpath(joinpath(path, projname))
+	cp(joinpath(path, "src") , joinpath(path, projname, "src"))
+	
+	for file in files
+		cp(joinpath(path, file), joinpath(path, projname, file))
+	end
+end
+end
+
+# ╔═╡ 92817630-6f4e-4f1e-b7fe-b85f0eef766e
+Documenter.showdoc(buildlib)
+
+# ╔═╡ 63254529-40f7-402d-857a-a0d61896b8e5
+#noop
+#build_lib test pre-requisite
+begin
+cp("../src", joinpath(testdir, "src"))
+cp("../src", joinpath(testdir, "nbs"))
+cp("../Project.toml", joinpath(testdir, "Project.toml"))
+cp("../Manifest.toml", joinpath(testdir, "Manifest.toml"))
+buildlib(testdir)
+end
+
+# ╔═╡ e3998a7f-b380-464a-ab8f-ff79e2a2aef3
+#noop
+@test isdir(joinpath(testdir, "Nbdev")) == true
+
+# ╔═╡ 0d66d777-9739-44a9-a6c0-2862c3125333
+#noop
+@test isdir(joinpath(testdir, "Nbdev", "src")) == true 
+
+# ╔═╡ b617e861-d4ad-40fd-a2a8-2e5919083024
+#noop
+@test isfile(joinpath(testdir, "Nbdev", "Project.toml")) == true
+
+# ╔═╡ ba2234f5-b4cf-46e2-92d4-3822574e84d6
+#noop
+@test isfile(joinpath(testdir, "Nbdev", "Manifest.toml")) == true
+
+# ╔═╡ ae461fde-297f-4ab8-86e1-26336e8e291a
+#noop
+begin
+rm(joinpath(testdir, "Nbdev"), recursive=true)
+rm(joinpath(testdir, "src"), recursive=true)
+rm(joinpath(testdir, "nbs"), recursive=true)
+rm(joinpath(testdir, "Project.toml"))
+rm(joinpath(testdir, "Manifest.toml"))
+end
 
 # ╔═╡ c96a7fe1-ccba-4499-aa15-95ced972492b
 #hide
@@ -157,6 +231,7 @@ Export.notebook2script(joinpath("..", "nbs"), joinpath("..", "src"))
 # ╠═2ac37248-81d0-4c8b-99c7-4dd9f400a955
 # ╠═2c396254-932f-4431-8f94-08dd2766aa8e
 # ╠═17a13720-29ba-11ec-0ba4-83c9ee9ac582
+# ╠═50c0f688-28c2-4064-abe3-718c029fa601
 # ╠═1f7d1cb4-7fb9-4f40-9350-70ef40bca38f
 # ╠═1c5d5f39-0349-454b-aa22-5feda1287b9d
 # ╠═e2e5d93e-d721-4e71-8e3a-cee7c323ff50
@@ -169,7 +244,6 @@ Export.notebook2script(joinpath("..", "nbs"), joinpath("..", "src"))
 # ╠═3059e68a-87a3-420f-934c-e2f9bc7499a9
 # ╠═ae286e66-f1cc-45e7-b271-2a9adf838a0d
 # ╠═f481a9f0-d91b-49b6-9bce-48896d6af938
-# ╠═8a115e3d-11d4-4632-8e59-e8c25cb4a295
 # ╠═785a962e-dfb0-49c0-9679-a6ff0702b001
 # ╠═1de9bc3d-0984-47f3-ad74-adb2290d3889
 # ╠═62705a1e-bbca-4bd1-815c-6f00ece58b73
@@ -180,4 +254,13 @@ Export.notebook2script(joinpath("..", "nbs"), joinpath("..", "src"))
 # ╠═7477e2a6-d2a2-4552-9b03-63daef9c1189
 # ╠═f29215d9-b898-4540-bf71-6e0c4f192979
 # ╠═89317c3d-5889-4887-893c-aed3bf37b55e
+# ╠═5f377d5e-cd11-428d-8ae5-c93f4f0c097c
+# ╠═30d55aa6-4c27-4ec7-8b03-de2eb00eb562
+# ╠═92817630-6f4e-4f1e-b7fe-b85f0eef766e
+# ╠═63254529-40f7-402d-857a-a0d61896b8e5
+# ╠═e3998a7f-b380-464a-ab8f-ff79e2a2aef3
+# ╠═0d66d777-9739-44a9-a6c0-2862c3125333
+# ╠═b617e861-d4ad-40fd-a2a8-2e5919083024
+# ╠═ba2234f5-b4cf-46e2-92d4-3822574e84d6
+# ╠═ae461fde-297f-4ab8-86e1-26336e8e291a
 # ╠═c96a7fe1-ccba-4499-aa15-95ced972492b
