@@ -56,6 +56,10 @@ function build(nbsdir)
 	Documenter.export2readme()
 end
 
+# ╔═╡ 7cdb54d2-bb7b-4bf7-821b-b4272781806d
+#export
+export build
+
 # ╔═╡ e2e5d93e-d721-4e71-8e3a-cee7c323ff50
 Documenter.showdoc(build)
 
@@ -85,6 +89,10 @@ function new(path = ".")
 	YAML.write_file(files[3], mkdocs)
 end
 end
+
+# ╔═╡ 1bc03c17-198c-489e-9e85-9f5d7d503e6e
+#export
+export new
 
 # ╔═╡ 579f18e2-1ada-4f4d-a726-f405763def7a
 Documenter.showdoc(new)
@@ -178,6 +186,10 @@ function buildlib(path = ".")
 end
 end
 
+# ╔═╡ 1a86702d-3e63-458d-b216-c173a3a0dfdd
+#export
+export buildlib
+
 # ╔═╡ 92817630-6f4e-4f1e-b7fe-b85f0eef766e
 Documenter.showdoc(buildlib)
 
@@ -234,11 +246,13 @@ Export.notebook2script(joinpath("..", "nbs"), joinpath("..", "src"))
 # ╠═50c0f688-28c2-4064-abe3-718c029fa601
 # ╠═1f7d1cb4-7fb9-4f40-9350-70ef40bca38f
 # ╠═1c5d5f39-0349-454b-aa22-5feda1287b9d
+# ╠═7cdb54d2-bb7b-4bf7-821b-b4272781806d
 # ╠═e2e5d93e-d721-4e71-8e3a-cee7c323ff50
 # ╠═d30b0dc5-8f18-4661-8ecf-147d21480a4d
 # ╠═9320c981-7d6d-4d26-a1ed-782ec23bda90
 # ╠═e3185d2a-1763-482e-9c5b-b6f9e1aafd84
 # ╠═68e3ea9b-a6a9-4ba6-ac0d-e5c8d4644eae
+# ╠═1bc03c17-198c-489e-9e85-9f5d7d503e6e
 # ╠═579f18e2-1ada-4f4d-a726-f405763def7a
 # ╠═02c9cc7c-fd6b-4346-bd36-710d6bc6806d
 # ╠═3059e68a-87a3-420f-934c-e2f9bc7499a9
@@ -256,6 +270,7 @@ Export.notebook2script(joinpath("..", "nbs"), joinpath("..", "src"))
 # ╠═89317c3d-5889-4887-893c-aed3bf37b55e
 # ╠═5f377d5e-cd11-428d-8ae5-c93f4f0c097c
 # ╠═30d55aa6-4c27-4ec7-8b03-de2eb00eb562
+# ╠═1a86702d-3e63-458d-b216-c173a3a0dfdd
 # ╠═92817630-6f4e-4f1e-b7fe-b85f0eef766e
 # ╠═63254529-40f7-402d-857a-a0d61896b8e5
 # ╠═e3998a7f-b380-464a-ab8f-ff79e2a2aef3

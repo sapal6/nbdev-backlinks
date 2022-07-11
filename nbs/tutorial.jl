@@ -11,19 +11,17 @@ using PlutoUI
 # ╔═╡ 00f8bf47-47d2-4a99-86ba-d7cd0b7f268b
 md""" ## First steps
 
+Install Nbdev by with the following command --> `add Nbdev`
+
+$(LocalResource("../docs/images/addnbdev.png"))
+
+This will install Nbdev in your global environment.
+
 Create a directory in your local system where you would want to start your work. For example, in your local system 
 
 $(LocalResource("../docs/images/testfolder.png"))
 
-`cd` into this directory now. This will be the place where you are going to place your project. Now open a command prompt from inside this directory and type `julia`, this will launch a Julia shell. Here type `]` to launch the "pkg" prompt and then you can type `activate .` in order to create a restricted environment where you can restrict further installations or else you can skip typing `activate .` and install Nbdev by with the following command --> `add Nbdev`
-
-$(LocalResource("../docs/images/addnbdev.png"))
-
-Now go back to the Julia prompt and type `import Nbdev followed by Nbdev.new()`. This will create a new directory with "newproj" as the default name at the root with the following structure.
-
-$(LocalResource("../docs/images/folderstruct.png"))
-
-If you want have a different name for your project directory then give a name while executing the `new` command. For example `Nbdev.new("hellowproject")`.
+`cd` into this directory now. This will be the place where you are going to place your project. Now open a command prompt from inside this directory and type `julia`, this will launch a Julia shell. Here type `]` to launch the "pkg" prompt and then you can type `activate .` in order to create a restricted environment where you can restrict further installations or else you can skip typing `activate .` and type `import Nbdev followed by Nbdev.new()`. This will create the "docs", "Nbdev", "nbs" and "src" directories in your project root. In addition to these directories the "Manifest.toml", mkdocs.yml" and "Project.toml" will also be created at the project root.
 
 """
 
@@ -37,42 +35,9 @@ md"""
 md"## First notebook"
 
 # ╔═╡ e0694cd4-7d07-494d-a010-f705d1cbeb2c
-md"""`cd` into the project directory that you created in previous step. this is where you will create your package and put all the related code. 
-
-Once you are inside this directory, open a terminal and start Pluto the usual way as you use to do and create a notebook inside the "nbs" directory.
+md"""Inside the project directory, open a terminal and start Pluto the usual way and create a notebook inside the "nbs" directory.
 
 At this point you might have installed Nbdev in your global environment. If this is not the case then follow any of the below methods."""
-
-# ╔═╡ 15a5c4fd-301e-4f7c-9ad3-28ae2d214224
-md"""
-
-### Method 1 - Keeping Nbbev installation isolated for a specific Pluto notebook
-
-* After you `cd` into your project directory (created with the command `Nbdev.new()`), open a terminal and type in the command `julia`.
-
-* Then type in `]` to opne the pkg teminal.
-
-* Activate the package environment by typing `activate .` . This will activate an isolated environment for you current package.
-
-* In the Pkg terminal type `add Pluto`. This will install pluto at project level.
-
-* After installation is done, move back to the Julia terminal and type in the following 👇
-
-```
-import Pluto
-Pluto.run()
-```
-
-* Copy the notebook link which pops up in the terminal and paste it in the browser of choice. This will launch the Pluto GUI. Now, create a new notebook.
-
-* In the first cell of your notebook type in the following code 👇
-
-```
-using Nbdev
-```
-
-* This will install Nbdev in our notebook environment. If you have followed this step then it's obvious that you want your developement environment to be isolated within a notebook. If this is the case then you can skip "method 2" and proceed with the next steps.
-"""
 
 # ╔═╡ 305c50dd-78bd-43d9-8f4e-7074bb046a59
 md"""
@@ -81,28 +46,6 @@ Do remember that if you keep your Nbdev installation isolated within a specific 
 
 If you want to be able to use all the commands in Nbdev then use method 2.
 """
-
-# ╔═╡ 2ac2c281-ad4a-4364-8f62-5c8202d4e9c1
-md"### Method 2- Installing Nbdev at the project enviroment level and sharing the environment with all notebooks
-
-* After you `cd` into your project directory (created with the command `Nbdev.new()`), open a terminal and type in the command `julia`.
-
-* Then type in `]` to opne the pkg teminal.
-
-* Activate the package environment by typing `activate .` . This will activate an isolated environment for you current package.
-
-* Now,type add Nbdev. This wil install Nbdev at your project level.
-
-* To share this installation of Nbdev (or any other dependencies which you had installed at your project level) use the following steps
-
-  * Open a notebook inside the nbs directory.
-  * In the first cell of your notebook use the following code
-```
-     begin
-     import Pkg
-     Pkg.activate(Base.current_project())
-     end
-```"
 
 # ╔═╡ 9258500a-0a33-41cd-b32a-e09e820f84ee
 md"## Start building your project"
@@ -317,7 +260,21 @@ md"""In the mkdocs.yml file, edit the "site_name" config to the name that you wa
 md"## Optional edits"
 
 # ╔═╡ 952bc125-e3b6-474c-90c4-786fdf300dcc
-md"There are loads f other optional edits which you can make to the config file in order to customize your project website. Refer the documentation [here](https://squidfunk.github.io/mkdocs-material/getting-started/) to know about the other options."
+md"There are loads of other optional edits which you can make to the config file in order to customize your project website. Refer the documentation [here](https://squidfunk.github.io/mkdocs-material/getting-started/) to know about the other options."
+
+# ╔═╡ aa281843-1b37-44e3-b939-05c9c882ad49
+md"## Packaging"
+
+# ╔═╡ ef5e224d-8a21-42d0-a210-475639b18884
+md"""To build documentation, goto the project root and launch the Julia prompt and then import Nbdev with `import Nbdev` and then call the following function `Nbdev.buildlib()`. Your code at the Julia prompt should look like this 
+
+```
+import Nbdev
+Nbdev.buildlib()
+```
+
+This will create a directory in your project root with a name same as teh name of the "name" key in your Project.toml file and then copy the "src" directory, Project.toml file and Manifest.toml file into this newely created directory.
+"""
 
 # ╔═╡ 7429a0be-4f40-4d36-89cd-df56377c4502
 md"## Publishing your project website"
@@ -540,9 +497,7 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═fbb6eadc-80a1-4cd9-ad27-bebcdd6e5981
 # ╠═b0c1fe8f-e796-4835-95f8-17990c7421a7
 # ╠═e0694cd4-7d07-494d-a010-f705d1cbeb2c
-# ╠═15a5c4fd-301e-4f7c-9ad3-28ae2d214224
 # ╠═305c50dd-78bd-43d9-8f4e-7074bb046a59
-# ╠═2ac2c281-ad4a-4364-8f62-5c8202d4e9c1
 # ╠═9258500a-0a33-41cd-b32a-e09e820f84ee
 # ╠═dedef829-e43c-41c9-8238-b9d631dccb35
 # ╠═99d43364-5ac6-43bb-a70c-20a79a463fdf
@@ -583,6 +538,8 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═23ac38d5-c44a-4b8b-86c4-0bc3833add14
 # ╠═33eaee48-fc83-4c71-949d-1c9b9a2b32aa
 # ╠═952bc125-e3b6-474c-90c4-786fdf300dcc
+# ╠═aa281843-1b37-44e3-b939-05c9c882ad49
+# ╠═ef5e224d-8a21-42d0-a210-475639b18884
 # ╠═7429a0be-4f40-4d36-89cd-df56377c4502
 # ╠═8fa0648a-599b-4ed5-870f-6b3d74e25fcd
 # ╟─00000000-0000-0000-0000-000000000001

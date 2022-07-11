@@ -24,6 +24,9 @@ function build(nbsdir)
 end
 
 #export
+export build
+
+#export
 mkdocs = OrderedDict("site-name" => "your site name", "nav" => [OrderedDict("Home" => "index.md")],
 "theme" => OrderedDict("name" => "material", "palette" => OrderedDict("primary" => "white"), "font" => OrderedDict("text" => "Roboto"), "logo" => "assets/asset image filename", "favicon" => "asset/ asset name", "features" => "navigation.tabs", "markdown_extensions" => ["meta", "toc"], "plugins" => ["search", "tags"]), "extra" => OrderedDict("social" => [OrderedDict("icon" => "fontawsome/brans/twitter", "link" => "twitter link"), OrderedDict("icon" => "fotawsome/brands/linkedin", "link" => "linkedin link")]), "repo_url" => "url to your git repo", "repo_name" => "name of your git repo")
 
@@ -40,6 +43,9 @@ function new(path = ".")
 	YAML.write_file(files[3], mkdocs)
 end
 end
+
+#export
+export new
 
 #export
 begin
@@ -67,5 +73,8 @@ function buildlib(path = ".")
 	end
 end
 end
+
+#export
+export buildlib
 
 end
