@@ -39,14 +39,6 @@ md"""Inside the project directory, open a terminal and start Pluto the usual way
 
 At this point you might have installed Nbdev in your global environment. If this is not the case then follow any of the below methods."""
 
-# ╔═╡ 305c50dd-78bd-43d9-8f4e-7074bb046a59
-md"""
-!!! note
-Do remember that if you keep your Nbdev installation isolated within a specific notebook then you may not be able to use some of the Nbdev commands at project level (outside a notebook i.e. from the terminal of your project). For example if you go with method 1 then you can run `Nbdev.build()` command from a terminal in your project root since Nbdev is not present in the Project.toml in your specific project. To do this you would need to install Nbdev at your project or global level anyways.
-
-If you want to be able to use all the commands in Nbdev then use method 2.
-"""
-
 # ╔═╡ 9258500a-0a33-41cd-b32a-e09e820f84ee
 md"## Start building your project"
 
@@ -497,7 +489,6 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═fbb6eadc-80a1-4cd9-ad27-bebcdd6e5981
 # ╠═b0c1fe8f-e796-4835-95f8-17990c7421a7
 # ╠═e0694cd4-7d07-494d-a010-f705d1cbeb2c
-# ╠═305c50dd-78bd-43d9-8f4e-7074bb046a59
 # ╠═9258500a-0a33-41cd-b32a-e09e820f84ee
 # ╠═dedef829-e43c-41c9-8238-b9d631dccb35
 # ╠═99d43364-5ac6-43bb-a70c-20a79a463fdf
